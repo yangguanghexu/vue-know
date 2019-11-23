@@ -1,4 +1,4 @@
-# vuedemo
+# vue-know
 
 ## Project setup
 ```
