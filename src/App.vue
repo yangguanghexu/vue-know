@@ -1,20 +1,30 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <van-tabbar v-if="$route.meta.keepCache" v-model="active">
+      <van-tabbar-item to="/" icon="home-o">首页</van-tabbar-item>
+      <van-tabbar-item to="/column" icon="label-o">专栏</van-tabbar-item>
+      <van-tabbar-item to="/user" icon="friends-o">我的</van-tabbar-item>
+    </van-tabbar>
+    <keep-alive>
+      <router-view v-if="$route.meta.keepAlive">
+        <!-- 这里是会被缓存的视图组件，比如 Home！ -->
+      </router-view>
+    </keep-alive>
+    <router-view v-if="!$route.meta.keepAlive"></router-view>
   </div>
 </template>
-
+<script>
+export default {
+  data() {
+    return {
+      active: 0
+    };
+  }
+};
+</script>
 <style lang="less">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+body {
+  background-color: #ffffff;
 }
 
 #nav {
