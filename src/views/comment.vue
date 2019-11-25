@@ -78,14 +78,14 @@ export default {
   methods: {
     getLongComment() {
       this.$axios(
-        "http://182.61.3.247/api/4/story/" + this.id + "/long-comments"
+        this.baseURL+"/api/4/story/" + this.id + "/long-comments"
       ).then(data => {
         this.longComment = data.data;
       });
     },
     getShortComment() {
       this.$axios(
-        "http://182.61.3.247/api/4/story/" + this.id + "/short-comments"
+        this.baseURL+"/api/4/story/" + this.id + "/short-comments"
       ).then(data => {
         this.shortComment = data.data;
       });

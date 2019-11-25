@@ -11,7 +11,7 @@ export default {
   },
   methods: {
     getUserData() {
-      this.$axios.post("http://182.61.3.247:8888/userData").then(data => {
+      this.$axios.post(this.baseURL+"/userData").then(data => {
         this.userData = data.data;
       });
     }

@@ -43,7 +43,7 @@ export default {
     // 获取文章内容
     getData() {
       this.$axios(
-        "http://182.61.3.247/api/4/news/" + this.id
+       this.baseURL+ "/api/4/news/" + this.id
       ).then(data => {
         this.articleData = data.data;
       });
@@ -52,7 +52,7 @@ export default {
     // 获取文章额外信息
     getExtraData() {
       this.$axios(
-        "http://182.61.3.247/api/4/story-extra/" + this.id
+        this.baseURL+"/api/4/story-extra/" + this.id
       ).then(data => {
         this.extraData = data.data;
       });

@@ -67,7 +67,7 @@ export default {
   methods: {
     getData() {
       this.$axios(
-        "http://182.61.3.247/api/4/news/before/" + this.befortDay
+       this.baseURL+ "/api/4/news/before/" + this.befortDay
       )
         .then(data => {
           this.firstLoad = false;

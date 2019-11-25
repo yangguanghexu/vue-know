@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     getData() {
-      this.$axios("http://182.61.3.247/api/3/sections").then(data => {
+      this.$axios(this.baseURL+"/api/3/sections").then(data => {
         this.columnList = data.data.data;
       });
       this.columnLoad = false

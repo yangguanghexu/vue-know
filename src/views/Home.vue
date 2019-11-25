@@ -62,7 +62,7 @@ export default {
   methods: {
     // 初始化获取数据
     getData() {
-      this.$axios("http://182.61.3.247/api/4/news/latest")
+      this.$axios(this.baseURL+"/api/4/news/latest")
         .then(data => {
           this.loading = false;
           this.dataList = data.data;
@@ -98,7 +98,7 @@ export default {
       this.dataList = null;
       this.loading = true;
       this.$axios(
-        "http://182.61.3.247/api/4/news/before/" + this.fixedDay
+        this.baseURL+"/api/4/news/before/" + this.fixedDay
       )
         .then(data => {
           this.loading = false;

@@ -7,6 +7,7 @@ import axios from 'axios'
 import 'vant/lib/index.css';
 Vue.use(Vant);
 Vue.prototype.$axios = axios;
+Vue.prototype.baseURL = 'http://127.0.0.1:3000'
 axios.defaults.withCredentials = true;
 
 axios.interceptors.request.use((request) => {

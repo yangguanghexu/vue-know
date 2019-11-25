@@ -101,7 +101,7 @@ export default {
         this.errUserPassWord = "请输入密码";
       } else {
         this.$axios
-          .post("http://182.61.3.247:8888/login", {
+          .post( this.baseURL+"/login", {
             user: this.username,
             password: this.password,
             captcha: this.captcha
@@ -139,7 +139,7 @@ export default {
         this.$notify({ type: "danger", message: "两次密码输入不一致" });
       } else {
         this.$axios
-          .post("http://182.61.3.247:8888/registered", {
+          .post(this.baseURL+"/registered", {
             user: this.newUserName,
             password: this.newPassWord
           })
@@ -149,7 +149,8 @@ export default {
       }
     },
     getCaptcha() {
-      this.$axios("http://182.61.3.247:8888/getCaptcha").then(data => {
+      window.console.log(this.baseURL)
+      this.$axios(this.baseURL+'/getCaptcha').then(data => {
         this.captchaImg = data.data;
       });
     }

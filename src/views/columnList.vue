@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     getData() {
-      this.$axios("http://182.61.3.247/api/3/section/" + this.id).then(data => {
+      this.$axios(this.baseURL+"/api/3/section/" + this.id).then(data => {
         this.columnListData = data.data;
       });
       this.columnListLoad = false
