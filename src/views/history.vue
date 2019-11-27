@@ -66,9 +66,7 @@ export default {
   },
   methods: {
     getData() {
-      this.$axios(
-       this.baseURL+ "/api/4/news/before/" + this.befortDay
-      )
+      this.$axios(this.baseURL + "/api/4/news/before/" + this.befortDay)
         .then(data => {
           this.firstLoad = false;
           this.historyList.push(data.data);
@@ -113,10 +111,20 @@ export default {
       }, 1000);
     }
   },
-  created() {
-    this.thisDate = new Date();
-    this.befortDay = this.formaDate(this.thisDate);
-    this.getData();
+
+  activated() {
+    if (!this.$route.meta.isBack) {
+      this.thisDate = new Date();
+      this.befortDay = this.formaDate(this.thisDate);
+      this.getData();
+    }
+    this.$route.meta.isBack = false;
+  },
+  beforeRouteEnter(to, from, next) {
+    if (from.name == "article") {
+      to.meta.isBack = true;
+    }
+    next();
   }
 };
 </script>
@@ -125,7 +133,8 @@ export default {
   padding-top: 0;
   padding-bottom: 0;
 }
-.van-cell:not(:last-child)::after ,.van-cell:not(:last-child)::after{
+.van-cell:not(:last-child)::after,
+.van-cell:not(:last-child)::after {
   border: none;
 }
 </style>

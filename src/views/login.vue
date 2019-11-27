@@ -45,7 +45,14 @@
       <div v-show="tab == 1" class="registration">
         <van-cell-group>
           <van-field v-model="newUserName" required clearable label="用户名" placeholder="请输入用户名" />
-          <van-field v-model="newPassWord" type="password"  label="密码" placeholder="请输入密码" required clearable />
+          <van-field
+            v-model="newPassWord"
+            type="password"
+            label="密码"
+            placeholder="请输入密码"
+            required
+            clearable
+          />
           <van-field
             v-model="newPassWordS"
             type="password"
@@ -101,7 +108,7 @@ export default {
         this.errUserPassWord = "请输入密码";
       } else {
         this.$axios
-          .post( this.baseURL+"/login", {
+          .post(this.userURL + "/login", {
             user: this.username,
             password: this.password,
             captcha: this.captcha
@@ -109,15 +116,15 @@ export default {
           .then(data => {
             if (data.data.code == "200") {
               localStorage.setItem("token", data.data.token);
-              this.$router.push('/user')
+              this.$router.push("/user");
             } else if (data.data.msg == "验证码不正确") {
               this.$notify({ type: "danger", message: "验证码不正确" });
-              this.captcha = ""
-              this.getCaptcha()
+              this.captcha = "";
+              this.getCaptcha();
             } else {
               this.$notify({ type: "danger", message: "帐号或密码不正确" });
-              this.captcha = ""
-              this.getCaptcha()
+              this.captcha = "";
+              this.getCaptcha();
             }
           })
           .catch(function(error) {
@@ -133,24 +140,30 @@ export default {
       ) {
         this.$notify({ type: "danger", message: "请输入用户名" });
       } else if (
-        this.newPassWord !== this.newPassWordS ||
+        this.newPassWord == null ||
+        this.newPassWord != this.newPassWordS ||
         this.newPassWordS.length < 8
       ) {
         this.$notify({ type: "danger", message: "两次密码输入不一致" });
       } else {
         this.$axios
-          .post(this.baseURL+"/registered", {
+          .post(this.userURL + "/registered", {
             user: this.newUserName,
             password: this.newPassWord
           })
           .then(data => {
-            window.console.log(data);
+            if (data.data.code == -200)  { 
+              this.$notify({ type: "danger", message: data.data.msg });
+            }else{
+               this.$notify({ type: "success", message: "注册成功" });
+               this.tab = 0
+            }
           });
       }
     },
     getCaptcha() {
-      window.console.log(this.baseURL)
-      this.$axios(this.baseURL+'/getCaptcha').then(data => {
+      window.console.log(this.baseURL);
+      this.$axios.get(this.userURL + "/getCaptcha").then(data => {
         this.captchaImg = data.data;
       });
     }

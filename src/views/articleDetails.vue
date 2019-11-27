@@ -22,7 +22,7 @@
         <div class="praiseBtn">
           <van-icon name="good-job-o" :info="this.extraData.popularity" />
         </div>
-        <div class="collectionBtn">
+        <div class="collectionBtn" @click="toCollect">
           <van-icon name="star-o" />
         </div>
       </div>
@@ -42,18 +42,14 @@ export default {
   methods: {
     // 获取文章内容
     getData() {
-      this.$axios(
-       this.baseURL+ "/api/4/news/" + this.id
-      ).then(data => {
+      this.$axios(this.baseURL + "/api/4/news/" + this.id).then(data => {
         this.articleData = data.data;
       });
       this.getExtraData();
     },
     // 获取文章额外信息
     getExtraData() {
-      this.$axios(
-        this.baseURL+"/api/4/story-extra/" + this.id
-      ).then(data => {
+      this.$axios(this.baseURL + "/api/4/story-extra/" + this.id).then(data => {
         this.extraData = data.data;
       });
     },
@@ -65,26 +61,48 @@ export default {
           id: this.id
         }
       });
+    },
+    // 收藏
+    toCollect() {
+      this.$axios
+        .post(this.userURL + "/collect", {
+          collectId: this.id,
+          collectTitle: this.articleData.title,
+          collectImg: this.articleData.images[0],
+          collectComment: this.extraData.comments,
+          collectGood: this.extraData.popularity
+        })
+        .then(data => {
+          window.console.log(data);
+        })
+        .catch(err => {
+          window.console.log(err);
+        });
+      this.$toast({
+        message: "收藏成功",
+        icon: "star",
+        duration: 800
+      });
     }
   },
-  created() {
-    this.getData();
+  activated() {
+    if (!this.$route.meta.isBack) {
+      this.articleData = null;
+      this.id = this.$route.query.id;
+      // 如果isBack是false，表明需要获取新数据，否则就不再请求，直接使用缓存的数据
+      this.getData();
+    }
+    // 恢复成默认的false，避免isBack一直是true，导致下次无法获取数据
+    this.$route.meta.isBack = false;
+    
+  },
+  beforeRouteEnter(to, from, next) {
+    window.console.log(from.name);
+    if (from.name == "comment") {
+      to.meta.isBack = true;
+    }
+    next();
   }
-  // activated() {
-  //   if (this.$route.meta.isUseCache) {
-  //     this.articleData = null;
-  //     this.extraData = null;
-  //     this.id = this.$route.query.id;
-  //     this.getData();
-  //   }
-  // },
-  // beforeRouteLeave(to, from, next) {
-  //   if (to.name == "history") {
-  //     this.articleData = null;
-  //     this.extraData = null;
-  //   }
-  //   next();
-  // }
 };
 </script>
 
@@ -150,6 +168,7 @@ export default {
         right: -8px;
         color: #333;
         background: none;
+        border: none;
       }
     }
     .backBtn {

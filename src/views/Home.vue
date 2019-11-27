@@ -4,7 +4,7 @@
       <router-link class="tabs-item active" to="/">日报</router-link>
       <router-link class="tabs-item" to="history">历史内容</router-link>
     </div>
-    <router-view/>
+    <router-view />
     <div class="loading" v-if="loading">
       <van-loading type="spinner" color="rgb(25, 137, 250)" />
     </div>
@@ -24,7 +24,9 @@
         </div>
       </div>
     </div>
-    <div class="date-btn" @click="()=>this.popUp = true"><van-icon name="calender-o" /></div>
+    <div class="date-btn" @click="()=>this.popUp = true">
+      <van-icon name="calender-o" />
+    </div>
     <van-popup position="bottom" v-model="popUp">
       <van-datetime-picker
         @cancel="()=>this.popUp = false"
@@ -62,7 +64,8 @@ export default {
   methods: {
     // 初始化获取数据
     getData() {
-      this.$axios(this.baseURL+"/api/4/news/latest")
+      this.$axios
+        .get(this.baseURL + "/api/4/news/latest")
         .then(data => {
           this.loading = false;
           this.dataList = data.data;
@@ -97,9 +100,8 @@ export default {
       this.popUp = false;
       this.dataList = null;
       this.loading = true;
-      this.$axios(
-        this.baseURL+"/api/4/news/before/" + this.fixedDay
-      )
+      this.$axios
+        .get(this.baseURL + "/api/4/news/before/" + this.fixedDay)
         .then(data => {
           this.loading = false;
           this.dataList = data.data;
@@ -123,8 +125,12 @@ export default {
       return `${year}${month}${day}`;
     }
   },
-  created() {
-    this.getData();
+
+  activated() {
+    if (!this.$route.meta.isBack) {
+      this.getData();
+    }
+    this.$route.meta.isBack = false;
   }
 };
 </script>

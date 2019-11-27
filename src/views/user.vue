@@ -1,5 +1,10 @@
 <template>
-  <div>{{userData}}</div>
+  <div class="user">
+    {{userData}}
+    <div class="user-collect">
+      <div class="collect-list"></div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -11,16 +16,19 @@ export default {
   },
   methods: {
     getUserData() {
-      this.$axios.post(this.baseURL+"/userData").then(data => {
+      this.$axios.post(this.userURL + "/userData").then(data => {
         this.userData = data.data;
       });
     }
   },
-  created(){
-      this.getUserData()
+  created() {
+    this.getUserData();
   }
 };
 </script>
-
-<style>
+<style lang="less" scoped>
+.user {
+  width: 95%;
+  margin: 0 auto;
+}
 </style>

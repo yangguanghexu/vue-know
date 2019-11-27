@@ -8,8 +8,12 @@ const routes = [{
         path: '/',
         name: 'home',
         meta: {
+            // 是否缓存
             keepAlive: true,
-            keepCache: true
+            // 底部导航
+            keepCache: true,
+            // 返回页面不刷新
+            isBack: false
         },
         component: Home
     },
@@ -37,12 +41,12 @@ const routes = [{
         path: '/article',
         name: 'article',
         meta: {
-            // 是否刷新数据
-            isUseCache: true,
             // 是否缓存
-            keepAlive: false,
+            keepAlive: true,
             // 底部导航
-            keepCache: false
+            keepCache: false,
+            // 返回页面不刷新
+            isBack: false
         },
         component: () =>
             import ('../views/articleDetails.vue'),
@@ -74,7 +78,8 @@ const routes = [{
         name: 'column',
         meta: {
             keepAlive: true,
-            keepCache: true
+            keepCache: true,
+
         },
         component: () =>
             import ('../views/column.vue')
@@ -84,9 +89,11 @@ const routes = [{
         name: 'columnList',
         meta: {
             // 是否缓存
-            keepAlive: false,
+            keepAlive: true,
             // 底部导航
-            keepCache: false
+            keepCache: false,
+            // 返回页面不刷新
+            isBack: false
         },
         component: () =>
             import ('../views/columnList.vue'),
