@@ -125,12 +125,8 @@ export default {
       return `${year}${month}${day}`;
     }
   },
-
-  activated() {
-    if (!this.$route.meta.isBack) {
-      this.getData();
-    }
-    this.$route.meta.isBack = false;
+  created() {
+    this.getData();
   }
 };
 </script>

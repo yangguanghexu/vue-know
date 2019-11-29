@@ -111,20 +111,10 @@ export default {
       }, 1000);
     }
   },
-
-  activated() {
-    if (!this.$route.meta.isBack) {
-      this.thisDate = new Date();
-      this.befortDay = this.formaDate(this.thisDate);
-      this.getData();
-    }
-    this.$route.meta.isBack = false;
-  },
-  beforeRouteEnter(to, from, next) {
-    if (from.name == "article") {
-      to.meta.isBack = true;
-    }
-    next();
+  created() {
+    this.thisDate = new Date();
+    this.befortDay = this.formaDate(this.thisDate);
+    this.getData();
   }
 };
 </script>

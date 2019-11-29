@@ -22,8 +22,11 @@
         <div class="praiseBtn">
           <van-icon name="good-job-o" :info="this.extraData.popularity" />
         </div>
-        <div class="collectionBtn" @click="toCollect">
+        <div v-show="!collect" class="collectionBtn" @click="toCollect">
           <van-icon name="star-o" />
+        </div>
+        <div v-show="collect" class="collectionBtn" @click="cancelCollect">
+          <van-icon name="star" />
         </div>
       </div>
     </div>
@@ -35,6 +38,7 @@ export default {
   data() {
     return {
       articleData: null,
+      collect: false,
       extraData: null,
       id: this.$route.query.id
     };
@@ -73,18 +77,37 @@ export default {
           collectGood: this.extraData.popularity
         })
         .then(data => {
-          window.console.log(data);
+          if (data.data.code == 200) {
+            this.collect = true;
+            this.$toast({
+              message: data.data.msg,
+              icon: "star",
+              duration: 800
+            });
+          }
         })
         .catch(err => {
           window.console.log(err);
         });
-      this.$toast({
-        message: "收藏成功",
-        icon: "star",
-        duration: 800
-      });
+    },
+    // 取消收藏
+    cancelCollect() {
+      this.$axios
+        .post(this.userURL + "/cancelCollect", {
+          collectId: this.id
+        })
+        .then(data => {
+          this.collect = false;
+          this.$toast({
+            message: data.data.msg,
+            icon: "star-o",
+            duration: 800
+          });
+          window.console.log(data);
+        });
     }
   },
+
   activated() {
     if (!this.$route.meta.isBack) {
       this.articleData = null;
@@ -94,7 +117,6 @@ export default {
     }
     // 恢复成默认的false，避免isBack一直是true，导致下次无法获取数据
     this.$route.meta.isBack = false;
-    
   },
   beforeRouteEnter(to, from, next) {
     window.console.log(from.name);
