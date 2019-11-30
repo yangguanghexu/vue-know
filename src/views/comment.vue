@@ -41,7 +41,7 @@
             <div class="comment-date">{{item.time | timestampToTime}}</div>
             <div class="comment-praise">
               {{item.likes}}
-              <van-icon size="16" name="good-job-o" />
+              <van-icon name="good-job-o" />
             </div>
           </div>
         </div>
@@ -78,14 +78,14 @@ export default {
   methods: {
     getLongComment() {
       this.$axios(
-        this.baseURL+"/api/4/story/" + this.id + "/long-comments"
+        this.baseURL + "/api/4/story/" + this.id + "/long-comments"
       ).then(data => {
         this.longComment = data.data;
       });
     },
     getShortComment() {
       this.$axios(
-        this.baseURL+"/api/4/story/" + this.id + "/short-comments"
+        this.baseURL + "/api/4/story/" + this.id + "/short-comments"
       ).then(data => {
         this.shortComment = data.data;
       });
@@ -151,7 +151,8 @@ export default {
         box-sizing: border-box;
         color: rgb(202, 202, 202);
         i {
-          vertical-align: sub;
+          font-size: 14px;
+          vertical-align: middle;
           margin-left: 3px;
         }
       }

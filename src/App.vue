@@ -1,10 +1,14 @@
 <template>
   <div id="app">
-    <van-tabbar v-if="$route.meta.keepCache" v-model="active">
+
+
+
+    <van-tabbar v-if="$route.meta.keepCache" route>
       <van-tabbar-item to="/" icon="home-o">首页</van-tabbar-item>
       <van-tabbar-item to="/column" icon="label-o">专栏</van-tabbar-item>
       <van-tabbar-item to="/user" icon="friends-o">我的</van-tabbar-item>
     </van-tabbar>
+
     <keep-alive>
       <router-view v-if="$route.meta.keepAlive">
         <!-- 这里是会被缓存的视图组件，比如 Home！ -->
@@ -14,13 +18,7 @@
   </div>
 </template>
 <script>
-export default {
-  data() {
-    return {
-      active: 0
-    };
-  }
-};
+
 </script>
 <style lang="less">
 body {
