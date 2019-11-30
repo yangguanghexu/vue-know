@@ -1,9 +1,9 @@
 <template>
   <div style="padding-bottom:50px">
-    <div class="tabs">
+    <!-- <div class="tabs">
       <router-link class="tabs-item" to="/">每日日报</router-link>
       <router-link class="tabs-item active" to="history">历史内容</router-link>
-    </div>
+    </div> -->
     <div class="loading" v-if="firstLoad">
       <van-loading type="spinner" color="rgb(25, 137, 250)" />
     </div>

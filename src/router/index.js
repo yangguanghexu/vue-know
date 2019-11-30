@@ -15,7 +15,7 @@ const routes = [{
             // 返回页面不刷新
             isBack: false
         },
-        component: Home
+        component: Home,
     },
     {
         path: '/about',
@@ -62,16 +62,6 @@ const routes = [{
         },
         component: () =>
             import ('../views/comment.vue'),
-    },
-    {
-        path: '/history',
-        name: 'history',
-        meta: {
-            keepAlive: true,
-            keepCache: true
-        },
-        component: () =>
-            import ('../views/history.vue')
     },
     {
         path: '/column',

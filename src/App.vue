@@ -1,8 +1,5 @@
 <template>
   <div id="app">
-
-
-
     <van-tabbar v-if="$route.meta.keepCache" route>
       <van-tabbar-item to="/" icon="home-o">首页</van-tabbar-item>
       <van-tabbar-item to="/column" icon="label-o">专栏</van-tabbar-item>

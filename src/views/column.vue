@@ -26,17 +26,17 @@ export default {
   data() {
     return {
       columnList: null,
-      columnLoad:true
+      columnLoad: true,
+      offsetTop: 0
     };
   },
   methods: {
     getData() {
-      this.$axios.get('http://127.0.0.1:8888/api/3/sections').then(data => {
+      this.$axios.get("http://127.0.0.1:8888/api/3/sections").then(data => {
         this.columnList = data.data.data;
       });
-      this.columnLoad = false
+      this.columnLoad = false;
     },
-
     toArticle(id) {
       this.$router.push({
         name: "columnList",
@@ -46,8 +46,18 @@ export default {
       });
     }
   },
-  created(){
-      this.getData();
+  created() {
+    this.getData();
+  },
+  activated() {
+    // keep-alive组件 页面进入的时候设置滚动高度
+    document.documentElement.scrollTop = this.offsetTop;
+  },
+  beforeRouteLeave(to, from, next) {
+    // 组件离开的时候，获取页面滚动高度
+    window.console.log(document.documentElement.scrollTop);
+    this.offsetTop = document.documentElement.scrollTop;
+    next();
   }
 };
 </script>
