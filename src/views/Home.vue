@@ -7,78 +7,79 @@
 
     <div class="list-main">
       <!-- <transition name="van-slide-left"> -->
-        <div v-show="listItem == 0" class="list-item">
-          <div class="loading" v-if="loading">
-            <van-loading type="spinner" color="rgb(25, 137, 250)" />
-          </div>
-          <div v-if="dataList" class="article-list">
-            <div
-              class="article-item"
-              @click="toArticle(item.id)"
-              v-for="item in dataList.stories"
-              :key="item.index"
-            >
-              <div class="article-img">
-                <img :src="item.images[0]" />
-              </div>
-              <div class="article-main">
-                <div class="article-title">{{item.title}}</div>
-                <div class="article-detail">{{item.hint}}</div>
-              </div>
+      <div v-show="listItem == 0" class="list-item">
+        <div class="loading" v-if="loading">
+          <van-loading type="spinner" color="rgb(25, 137, 250)" />
+        </div>
+        <div v-if="dataList" class="article-list">
+          <div
+            class="article-item"
+            @click="toArticle(item.id)"
+            v-for="item in dataList.stories"
+            :key="item.index"
+          >
+            <div class="article-img">
+              <img :src="item.images[0]" />
+            </div>
+            <div class="article-main">
+              <div class="article-title">{{item.title}}</div>
+              <div class="article-detail">{{item.hint}}</div>
             </div>
           </div>
-          <div class="date-btn" @click="()=>this.popUp = true">
-            <van-icon name="calender-o" />
-          </div>
-          <van-popup position="bottom" v-model="popUp">
-            <van-datetime-picker
-              @cancel="()=>this.popUp = false"
-              @confirm="getFixedData"
-              v-model="currentDate"
-              type="date"
-              :formatter="formatter"
-              :min-date="minDate"
-              :max-date="maxDate"
-            />
-          </van-popup>
         </div>
+        <div class="date-btn" @click="()=>this.popUp = true">
+          <van-icon name="calender-o" />
+        </div>
+        <van-popup position="bottom" v-model="popUp">
+          <van-datetime-picker
+            @cancel="()=>this.popUp = false"
+            @confirm="getFixedData"
+            v-model="currentDate"
+            type="date"
+            :formatter="formatter"
+            :min-date="minDate"
+            :max-date="maxDate"
+          />
+        </van-popup>
+      </div>
       <!-- </transition>
-      <transition name="van-slide-right"> -->
-        <div v-show="listItem == 1" class="list-item">
-          <div class="loading" v-if="firstLoad">
-            <van-loading type="spinner" color="rgb(25, 137, 250)" />
-          </div>
-          <div v-if="historyList[0]">
-            <van-list
-              v-model="historyLoading"
-              :finished="finished"
-              finished-text="没有更多了"
-              @load="onLoad"
-            >
-              <van-cell v-for="item in historyList" :key="item.date">
-                <van-divider contentPosition="left">{{item.date | capitalize}}</van-divider>
-                <div class="article-list">
-                  <div
-                    class="article-item"
-                    v-for="(data,index) in item.stories"
-                    :key="index"
-                    @click="toArticle(data.id)"
-                  >
-                    <div class="article-img">
-                      <img :src="data.images[0]" />
-                    </div>
-                    <div class="article-main">
-                      <div class="article-title van-multi-ellipsis--l2">{{data.title}}</div>
-                      <div class="article-detail">{{data.hint}}</div>
-                    </div>
+      <transition name="van-slide-right">-->
+      <div v-show="listItem == 1" class="list-item">
+        <div class="loading" v-if="firstLoad">
+          <van-loading type="spinner" color="rgb(25, 137, 250)" />
+        </div>
+        <div v-if="historyList[0]">
+          <van-list
+            v-model="historyLoading"
+            :finished="finished"
+            finished-text="没有更多了"
+            @load="onLoad"
+          >
+            <van-cell v-for="item in historyList" :key="item.date">
+              <van-divider contentPosition="left">{{item.date | capitalize}}</van-divider>
+              <div class="article-list">
+                <div
+                  class="article-item"
+                  v-for="(data,index) in item.stories"
+                  :key="index"
+                  @click="toArticle(data.id)"
+                >
+                  <div class="article-img">
+                    <img :src="data.images[0]" />
+                  </div>
+                  <div class="article-main">
+                    <div class="article-title van-multi-ellipsis--l2">{{data.title}}</div>
+                    <div class="article-detail">{{data.hint}}</div>
                   </div>
                 </div>
-              </van-cell>
-            </van-list>
-          </div>
+              </div>
+            </van-cell>
+          </van-list>
         </div>
+      </div>
       <!-- </transition> -->
     </div>
+    <van-icon class="go-top" v-show="visiable" @click="handleScrollTop" name="arrow-up" />
   </div>
 </template>
 
@@ -120,7 +121,11 @@ export default {
       // 下拉加载前一天的时间
       befortDay: null,
       // 距离顶部距离
-      offsetTop: 0
+      offsetTop: 0,
+      // 初始化scrollTop
+      scrollTop: null,
+      //返回顶部按钮
+      visiable: false
     };
   },
   filters: {
@@ -146,7 +151,6 @@ export default {
   methods: {
     // 列表切换
     listActive(val) {
-      window.console.log(val);
       if (val == 0) {
         this.offsetTop = document.documentElement.scrollTop;
         this.listItem = 0;
@@ -245,12 +249,42 @@ export default {
         this.historyLoading = false;
         this.getHistoryData();
       }, 1000);
+    },
+    // 返回顶部显示隐藏
+    handleScroll() {
+      this.scrollTop =
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop;
+      if (this.scrollTop > 500) {
+        this.visiable = true;
+      } else {
+        this.visiable = false;
+      }
+    },
+    // 返回顶部
+    handleScrollTop() {
+      let timer = null,
+        that = this;
+      cancelAnimationFrame(timer);
+      timer = requestAnimationFrame(function fn() {
+        if (that.scrollTop > 0) {
+          that.scrollTop -= 50;
+          document.body.scrollTop = document.documentElement.scrollTop =
+            that.scrollTop;
+          timer = requestAnimationFrame(fn);
+        } else {
+          cancelAnimationFrame(timer);
+          that.visiable = false;
+        }
+      });
     }
   },
   created() {
     this.thisDate = new Date();
     this.befortDay = this.formaDate(this.thisDate);
     this.getData();
+    window.addEventListener("scroll", this.handleScroll);
     setTimeout(() => {
       this.getHistoryData();
       this.onLoad();
@@ -303,9 +337,9 @@ export default {
   }
 }
 
-.list-item{
+.list-item {
   width: 100%;
-  // position: absolute; 
+  // position: absolute;
 }
 
 .article-list {
@@ -367,5 +401,15 @@ export default {
 }
 .van-divider {
   margin: 0 !important;
+}
+.go-top {
+  position: fixed !important;
+  right: 50px;
+  bottom: 160px;
+  padding: 5px;
+  color: #1989fa;
+  border-radius: 50%;
+  background-color: #fff;
+  box-shadow: 1px 1px 5px 1px #d0d0d0;
 }
 </style>
