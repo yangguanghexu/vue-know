@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     getData() {
-      this.$axios.get("http://127.0.0.1:8888/api/3/sections").then(data => {
+      this.$axios.get(this.baseURL +"/api/3/sections").then(data => {
         this.columnList = data.data.data;
       });
       this.columnLoad = false;
