@@ -105,6 +105,20 @@ export default {
           });
           window.console.log(data);
         });
+    },
+    // 判断是否收藏
+    ifCollect() {
+      this.$axios
+        .post(this.userURL + "/ifCollect", {
+          collectId: this.id
+        })
+        .then(data => {
+          if (data.data.msg == "true") {
+            this.collect = true;
+          } else {
+            this.collect = false;
+          }
+        });
     }
   },
 
@@ -114,6 +128,7 @@ export default {
       this.id = this.$route.query.id;
       // 如果isBack是false，表明需要获取新数据，否则就不再请求，直接使用缓存的数据
       this.getData();
+      this.ifCollect()
     }
     // 恢复成默认的false，避免isBack一直是true，导致下次无法获取数据
     this.$route.meta.isBack = false;

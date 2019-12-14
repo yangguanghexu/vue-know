@@ -31,7 +31,7 @@ const routes = [{
         path: '/login',
         name: 'login',
         meta: {
-            keepAlive: true,
+            keepAlive: false,
             keepCache: true
         },
         component: () =>
@@ -93,7 +93,7 @@ const routes = [{
         name: 'user',
         meta: {
             // 是否缓存
-            keepAlive: true,
+            keepAlive: false,
             // 底部导航
             keepCache: true
         },
