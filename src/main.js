@@ -22,13 +22,17 @@ axios.interceptors.request.use((request) => {
 
 axios.interceptors.response.use(
     response => {
-        // 在接收响应做些什么，例如跳转到登录页
         window.console.log(response)
         return response;
     },
     error => {
         if (error.response.status == '401') {
             localStorage.removeItem("token");
+            Vue.prototype.$toast({
+                message: '登录超时',
+                icon: "fail",
+                duration: 1500
+            });
             router.replace({
                 path: 'login'
             })
