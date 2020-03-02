@@ -1,13 +1,15 @@
 
-### 线上预览地址
+
+# vue-know
+
+
+## 线上预览地址
 
 [线上预览地址](http://39.106.218.219/)
 
 
 
-# vue-know
-
-## Project setup
+### Project setup
 ```
 npm install
 ```
